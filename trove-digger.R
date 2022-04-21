@@ -36,7 +36,8 @@ query_content <- list.select(get$content)
 # check str of this list
 str(query_content) #This confirms we have lists in this dataset. After some probing of each of the lists in the previous command, it seems clear that content is the container for the data we want.
 
-# This outputs a massice list, I think of all the records returned
+# This outputs a massive list, I think of all the records returned (11000). Now trying to use some different functions to access this data
+
 
 
 
