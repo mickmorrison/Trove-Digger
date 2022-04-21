@@ -18,7 +18,7 @@ query
 query_results <- content(get,as = "parsed")
 
 # Seeing what was gotten
-query_results
+query_results 
 
 # this has parsed a long list of fields. Viewing as a data frame just lists 272 variables in one column. We need to break into columns
 # now to try to extract the structured text
