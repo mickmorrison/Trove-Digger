@@ -1,0 +1,17 @@
+---
+title: "Readme"
+author: "Michael Morrison"
+date: "`r Sys.Date()`"
+output: html_document
+---
+This script is the start of what I hope will become a functional app for querying the Trove API and returning sources in a useful format. Key features need to be:
+* Ability to write custom queries based on the trove API technical guide. Initially queries will need to be manually written, but there may be ways to automate this
+* Ability to return hundreds or more records in a single query
+* Ability to parse returned information into a data.frame and csv file
+* Ability to download linked PDFs
+* Ability to download useful bibliographic information (e.g. a file to import to Zotero)
+
+The code at present is very basic and not at all working well, but it is a start. Other contributors welcome.
+
+Regards
+Mick Morrison
