@@ -3,66 +3,40 @@
 
 ## A simple script for accessing the trove API and returning useful information back to Rstudio.
 ## See /Readme.rmd for details
+## This command creates a data.frame from the above URL. This includes URL, snippet, title, and other 
+## 'base
+
+
 
 # Load the libraries
 library(httr)
-library(tidyverse)
-library(rlist)
-library(RJSONIO)
 library(jsonlite)
 
 rm(list=ls())
 
 # Use httr GET function to access the API with a search query
-# this URL needs to be modified to suit the query you wish to run. Queries can be very complex 
-# see https://trove.nla.gov.au/about/create-something/using-api/api-technical-guide#parameters-available-when-searching
-# i've just followed my nose here
-# this command creates a df from the above URL]
 
-searchurl <- "https://api.trove.nla.gov.au/v2/result?key=l5c9j180i2m9ngs2&zone=newspaper&q=weipa%20mission&n=10&encoding=json"
+# The URL below needs to be modified to suit the query you wish to run. Queries can be very complex
+# see the trove api guide @ https://trove.nla.gov.au/about/create-something/using-api/api-technical-guide#parameters-available-when-searching
 
-resp <- GET(searchurl)
+## Instructions
+### Very simply, you need to modify your query then run in Rstudio or elsewhere
 
-#First test to see http type
-http_type(resp)
+content <- GET("https://api.trove.nla.gov.au/v2/result?key=l5c9j180i2m9ngs2&zone=newspaper&q=mission%20weipa&n=10&encoding=json&reclevel=brief%20&date%3A1880%2D1890")
 
-# GET the http response from trove api endpoint
-content <- (content(resp))
+# append to url above to refine query
+# %20&include=articletext 
 
-content
-#view the results
-content # is returning nice lists - query results present. But weird and twisted format. 
+# Converting to character string
+char <- rawToChar(content$content)
 
-# Display the structure
-str(content)
+# now to convert character string to JSON
+json<- fromJSON(char)
 
-# list
-# attempt to coerce list into columns
-# specifying the level of list I'm interested in
+# turn into data.frame
+df <- as.data.frame(json$response$zone$records$article)
 
-records <- as.data.frame(content$response)
-
-# so this has helped transform the data
-# https://stackoverflow.com/questions/48212759/extracting-data-from-an-api-using-r
+# and last step, output to a csv in /outputs
+write.csv2(df, "~/GitRepos/Trove-Digger/Outputs/queryresult.csv")
 
 
-##### This section might be better above ####
-## Here be demons and fairies
-
-list.load(resp)
-
-text <- list.load("https://api.trove.nla.gov.au/v2/result?key=l5c9j180i2m9ngs2&zone=newspaper&q=weipa%20mission&n=10&encoding=json")
-
-class(text)
-
-# Testing this with jsonlite
-library(jsonlite)
-query <- GET("https://api.trove.nla.gov.au/v2/result?key=l5c9j180i2m9ngs2&zone=newspaper&q=weipa%20mission&n=10&encoding=json")
-
-r2 <- rawToChar(query$content)
-
-class(r2)
-
-r3 <- fromJSON(r2)
-df <- as.data.frame(r3$response$zone$records$article)
-df
